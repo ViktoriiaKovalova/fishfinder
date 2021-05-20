@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, flash
 from db import get_all_fishes
-from fish import Fish
+from fish import Fish, str2diet
 from fish import Diet
 
 app = Flask(__name__)
 app.config.from_mapping(
     SECRET_KEY='djdfskfjlsfjdlfjslev')
 
-default_color = 'f0f0f0'
+default_color = '000000'
 
 
 def create_fish_from_values(lifespan, mass, diet, length, height, color, length_fin, height_fin):
@@ -17,15 +17,13 @@ def create_fish_from_values(lifespan, mass, diet, length, height, color, length_
     if mass:
         fish.mass = float(mass)
     if diet != 'not chosen':
-        fish.diet = {'omnivorous': Diet.OMNIVOROUS, 'herbivorous': Diet.HERBIVOROUS, 'carnivorous': Diet.CARNIVOROUS}[diet]
+        fish.diet = str2diet(diet)
     if length:
         fish.length = float(length)
     if height:
         fish.height = float(height)
     if color != default_color:
-        rgb = (0, 0, 0)
-        for i in range(3):
-            rgb[i] = int('0x' + color[2*i + 1: 2*i + 2], 16)
+        rgb = tuple([int('0x' + color[2*i + 1: 2*i + 2], 16) for i in range(3)])
         fish.color = rgb
     if length_fin:
         fish.length_fin = float(length_fin)
@@ -62,7 +60,7 @@ def calculate_similarity(fish, db_fish) -> float:
 
 def get_the_closest_fish_from_db(fish):
     fishes = get_all_fishes()
-    best_fish = max(fishes, lambda x: calculate_similarity(fish, x))
+    best_fish = max(fishes, key=lambda x: calculate_similarity(fish, x))
     return best_fish
 
 
@@ -81,16 +79,20 @@ def index():
         for val in [lifespan, mass, length, height, length_fin, height_fin]:
             if val:
                 filled_values += 1
-        filled_values += (color != '#f0f0f0') + (diet != 'not chosen')
+        filled_values += (color != default_color) + (diet != 'not chosen')
         if filled_values < 3:
             flash('Too few values entered, the results might be incorrect')
         fish = create_fish_from_values(lifespan, mass, diet, length, height, color, length_fin, height_fin)
         result = get_the_closest_fish_from_db(fish)
-
+        message = f"Your fish is {result.name}!"
+        results = [message]
+    else:
+        results = []
     return render_template('index.html',
                            diet_values=['not chosen', 'carnivorous', 'herbivorous', 'omnivorous'],
                            fish_pic="clownclownfish.jpg",
-                           num_colors=1)
+                           num_colors=1,
+                           results=results)
 
 
 if __name__ == '__main__':

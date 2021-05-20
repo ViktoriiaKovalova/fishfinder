@@ -14,7 +14,7 @@ cur.execute("INSERT INTO diets (id, name) VALUES (?, ?)", (3, "omnivorous"))
 
 cur.execute("INSERT INTO colors (id, red, green, blue) VALUES (?, ?, ?, ?)", (0, 255, 0, 0))  # red
 
-cur.execute("INSERT INTO fins (id, length, height) VALUES(?, ?, ?)", (2.0, 2.0))
+cur.execute("INSERT INTO fins (id, length, height) VALUES(?, ?, ?)", (0, 2.0, 2.0))
 
 cur.execute("INSERT INTO fishes (id, name, lifespan, mass, diet_id, length, height, color_id, fin_id) VALUES"
             "(?, ?, ?, ?, ?, ?, ?, ?, ?)",

@@ -20,3 +20,7 @@ class Fish:
     color: tuple = None
     length_fin: float = None
     height_fin: float = None
+
+
+def str2diet(diet: str):
+    return {'omnivorous': Diet.OMNIVOROUS, 'herbivorous': Diet.HERBIVOROUS, 'carnivorous': Diet.CARNIVOROUS}[diet]
