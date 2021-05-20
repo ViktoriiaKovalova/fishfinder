@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, flash
-from db import get_all_fishes
+from db import get_all_fishes, get_image_for_fish_id
 from fish import Fish, str2diet
-from fish import Diet
 
 app = Flask(__name__)
 app.config.from_mapping(
@@ -86,11 +85,13 @@ def index():
         result = get_the_closest_fish_from_db(fish)
         message = f"Your fish is {result.name}!"
         results = [message]
+        picture = get_image_for_fish_id(result.id)
     else:
         results = []
+        picture = ''
     return render_template('index.html',
                            diet_values=['not chosen', 'carnivorous', 'herbivorous', 'omnivorous'],
-                           fish_pic="clownclownfish.jpg",
+                           fish_pic=picture,
                            num_colors=1,
                            results=results)
 

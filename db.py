@@ -32,3 +32,11 @@ def get_all_fishes():
         fishes.append(fish)
     conn.close()
     return fishes
+
+
+def get_image_for_fish_id(id: int):
+    conn = get_db_connection()
+    rows = conn.execute('SELECT images.name FROM images WHERE fish_id = (?)', (id,))
+    for row in rows:
+        return row['name']
+    return None
