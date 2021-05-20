@@ -1,0 +1,41 @@
+DROP TABLE IF EXISTS fishes;
+DROP TABLE IF EXISTS fins;
+DROP TABLE IF EXISTS diets;
+DROP TABLE IF EXISTS colors;
+DROP TABLE IF EXISTS images;
+
+CREATE TABLE fishes(
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    lifespan REAL NOT NULL,
+    mass REAL NOT NULL,
+    diet_id INTEGER NOT NULL,
+    length REAL NOT NULL,
+    height REAL NOT NULL,
+    color_id INTEGER NOT NULL,
+    fin_id INTEGER NOT NULL
+);
+
+CREATE TABLE fins (
+    id INTEGER PRIMARY KEY,
+    length REAL NOT NULL,
+    height REAL NOT NULL
+);
+
+CREATE TABLE diets (
+    id INTEGER PRIMARY KEY,
+    name TEXT NULL
+);
+
+CREATE TABLE colors (
+    id INTEGER PRIMARY KEY,
+    red INTEGER NOT NULL,
+    green INTEGER NOT NULL,
+    blue INTEGER NOT NULL
+);
+
+CREATE TABLE images (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    fish_id INTEGER NOT NULL
+);
